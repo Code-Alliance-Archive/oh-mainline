@@ -44,11 +44,10 @@ from xml.dom import minidom
 ## roundrobin() taken from http://docs.python.org/library/itertools.html
 
 # Name constants
-from mysite.settings import GITHUB_USERNAME_BASE_PATH, GOOGLE_CODE_USERNAME_BASE_PATH
+from mysite.settings import GITHUB_USERNAME_BASE_PATH, GOOGLE_CODE_USERNAME_BASE_PATH, ZOHO_AUTH_TOKEN
 
 SUGGESTION_COUNT = 6
 DEFAULT_CACHE_TIMESPAN = 86400 * 7
-ZOHO_AUTH_TOKEN = "93ec1ab167308f477ce9efa77091dafe"
 
 def roundrobin(*iterables):
     "roundrobin('ABC', 'D', 'EF') --> A D E B F C"

@@ -367,6 +367,8 @@ CRONJOBS = [
 SC4G_BASIC_AUTH_TOKEN = 'a2FsYTprYWxh'
 SC4G_FILES_URL = 'http://test.socialcoding4good.org/sites/default/files/webform/'
 
+ZOHO_AUTH_TOKEN = "360f9b1e917ef044f08f68944c188f76"
+
 ### Include a user's customizations
 try:
     from local_settings import *
