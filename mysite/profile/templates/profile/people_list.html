@@ -9,7 +9,7 @@
                 <fieldset>
                     <h3>
                         <input type="checkbox" name="selected_people"/>
-                        {{ person.user.first_name }} {{ person.user.last_name }}
+                        {{ person.user.first_name }} {{ person.user.last_name }} ({{ person.location_display_name }})
                     </h3>
                     {% if user|has_group:'ADMIN' %}
                         &nbsp&nbsp&nbsp&nbsp&nbsp<strong>Email: </strong> {{ person.user.email }}
@@ -17,7 +17,6 @@
                     {% for key, value in entry.fields.items %}
                         <strong>&nbsp&nbsp {{ key }}:</strong> {{ value }}
                     {% endfor %}
-                    <p><strong>Location:</strong> {{ person.location_display_name }}</p>
                     <p class="date">Date added: {{ person.date_added }}</p>
                 </fieldset>
             </li>
