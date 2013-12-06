@@ -379,6 +379,20 @@ div#portfolio {
     padding-right: 15px;
 }
 
+#results ul.people_list {
+    width: 100%;
+}
+
+.search_list {
+    position: relative;
+    list-style-type: none;
+}
+
+.search_list a, .search_list a:hover, .search_list a:active, .search_list a:focus {
+    color: #000000;
+    text_decoration: none;
+}
+
 .search_list p.date {
     font-size: 75%;
     color: #666666;
@@ -395,6 +409,9 @@ div#portfolio {
 }
 
 .search_list input[type=checkbox] {
+    position: absolute !important;
+    left: -20px;
+    top: 7px;
     display: none;
 }
 

@@ -18,7 +18,7 @@
 import django.contrib.auth.forms
 from django.contrib.auth.models import User
 import django.forms
-from mysite.profile.models import Person, FormQuestion, CardDisplayedQuestion, ListDisplayedQuestion
+from mysite.profile.models import Person, FormQuestion, CardDisplayedQuestion, ListDisplayedQuestion, ExportQuestion
 import StringIO
 from django.core.files.images import get_image_dimensions
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -252,3 +252,24 @@ class EditFieldsDisplayedInSearchForm(django.forms.Form):
                                                                                    choices=choices,
                                                                                    initial=initial,
                                                                                    required=False)
+
+
+class EditExportedFieldsForm(django.forms.Form):
+    questions = []
+    displayed_fields = []
+    type = None
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop(u'user')
+        self.questions = FormQuestion.objects.all()
+        self.displayed_fields = ExportQuestion.objects.filter(person__user__pk=self.user.id)
+        super(EditExportedFieldsForm, self).__init__(*args, **kwargs)
+
+        choices = [(question.id, question.display_name) for question in self.questions]
+        initial = [field.question.id for field in self.displayed_fields]
+        self.fields['exported_fields'] = django.forms.MultipleChoiceField(
+            widget=django.forms.CheckboxSelectMultiple,
+            choices=choices,
+            initial=initial,
+            required=False)
+

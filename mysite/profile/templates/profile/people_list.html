@@ -2,25 +2,27 @@
 {% load profile_extras %}
 
 <div id="results">
+    <ul class="people_list">
     {% for person in people %}
         {% with person|get_list_fields:request.user.id as entry %}
-    <a href="/people/{{ person.user.id }}" style="text-decoration: none;">
             <li class="search_list" data-person-id="{{ person.id }}">
-                <fieldset>
-                    <h3>
-                        <input type="checkbox" name="selected_people"/>
-                        {{ person.user.first_name }} {{ person.user.last_name }} ({{ person.location_display_name }})
-                    </h3>
-                    {% if user|has_group:'ADMIN' %}
-                        &nbsp&nbsp&nbsp&nbsp&nbsp<strong>Email: </strong> {{ person.user.email }}
-                    {% endif %}
-                    {% for key, value in entry.fields.items %}
-                        <strong>&nbsp&nbsp {{ key }}:</strong> {{ value }}
-                    {% endfor %}
-                    <p class="date">Date added: {{ person.date_added }}</p>
-                </fieldset>
+                <input type="checkbox" name="selected_people"/>
+                <a href="/people/{{ person.user.id }}" style="text-decoration: none;">
+                    <fieldset>
+                        <h3>
+                            {{ person.user.first_name }} {{ person.user.last_name }} ({{ person.location_display_name }})
+                        </h3>
+                        {% if user|has_group:'ADMIN' %}
+                            &nbsp&nbsp&nbsp&nbsp&nbsp<strong>Email: </strong> {{ person.user.email }}
+                        {% endif %}
+                        {% for key, value in entry.fields.items %}
+                            <strong>&nbsp&nbsp {{ key }}:</strong> {{ value }}
+                        {% endfor %}
+                        <p class="date">Date added: {{ person.date_added }}</p>
+                    </fieldset>
+                </a>
             </li>
-        </a>
         {% endwith %}
     {% endfor %}
+    </ul>
 </div>

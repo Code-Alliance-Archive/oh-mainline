@@ -238,6 +238,9 @@ urlpatterns = patterns('',
         (r'^account/settings/displayed_fields/list/edit/do$',
          'mysite.account.views.edit_displayed_fields_list_do'),
 
+        (r'^account/settings/exported_fields/list/edit/do$',
+         'mysite.account.views.edit_exported_fields_do'),
+
         (r'^account/settings/location/$',
             'mysite.account.views.set_location'),
 

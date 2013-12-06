@@ -487,6 +487,10 @@ function hideExport() {
                     }
                 });
 
+                if (selected_people.length <= 0) {
+                    return false;
+                }
+
                 var input = $(document.createElement("input"))
                     .attr("id", "export-selected-people")
                     .attr("type", "hidden")

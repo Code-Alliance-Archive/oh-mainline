@@ -28,13 +28,16 @@
 {% block body_id %}widget-settings{% endblock %}
 
 {% block settings_main %}
+    <script src="/static/js/edit_fields.js"></script>
     <div class='module-body contains-submodules two-columns' id="edit-fields">
         {% if request.user|has_group:'ADMIN' %}
         <fieldset>
-            <legend><h3>Default view type for volunteers list</h3></legend>
+            <legend>
+                <h3>Default view type for volunteers list (<a class="collapse-fieldset" href="#">Collapse</a>)</h3>
+            </legend>
             <form name='edit_view_type_form' action='/account/settings/view_type/edit/do' method='POST'
                   enctype="multipart/form-data">{% csrf_token %}
-                <div class="form-row">
+                <div>
                     {{ edit_view_type_form.view_list.errors }}
                     {{ edit_view_type_form.view_list }}
                 </div>
@@ -42,7 +45,9 @@
             </form>
         </fieldset>
         <fieldset>
-            <legend><h3>Edit Field Names</h3></legend>
+            <legend>
+                <h3>Edit Field Names (<a class="collapse-fieldset" href="#">Collapse</a>)</h3>
+            </legend>
             <form name='edit-fields' action='/account/settings/fields/edit/do' method='POST'
                   enctype="multipart/form-data">{% csrf_token %}
                 {% for field in edit_fields_form %}
@@ -60,7 +65,9 @@
         </fieldset>
         {% endif %}
         <fieldset>
-            <legend><h3>Fields displayed in search results (cards)</h3></legend>
+            <legend>
+                <h3>Fields displayed in search results - cards (<a class="collapse-fieldset" href="#">Collapse</a>) - <a class="select-all-fieldset" href="#">Select All</a> / <a class="select-none-fieldset" href="#">Select None</a></h3>
+            </legend>
             <form name='edit-fields' action='/account/settings/displayed_fields/cards/edit/do' method='POST'
                   enctype="multipart/form-data">{% csrf_token %}
                 {% for field in edit_displayed_fields_cards_form %}
@@ -75,7 +82,9 @@
             </form>
         </fieldset>
         <fieldset>
-            <legend><h3>Fields displayed in search results (list)</h3></legend>
+            <legend>
+                <h3>Fields displayed in search results - list (<a class="collapse-fieldset" href="#">Collapse</a>) - <a class="select-all-fieldset" href="#">Select All</a> / <a class="select-none-fieldset" href="#">Select None</a></h3>
+            </legend>
             <form name='edit-fields' action='/account/settings/displayed_fields/list/edit/do' method='POST'
                   enctype="multipart/form-data">{% csrf_token %}
                 {% for field in edit_displayed_fields_list_form %}
@@ -83,6 +92,23 @@
                         {{ field.errors }}
                         {{ field }}
                     </div>
+                {% endfor %}
+                <input class='save-button' type='submit' style='clear: left; float: left;' value='Save'/>
+                <a style="float: left; font-size: 1.1em; margin: 5px 0 0 10px"
+                   href="{% url account.views.set_location %}">Cancel</a>
+            </form>
+        </fieldset>
+        <fieldset>
+            <legend>
+                <h3>Exported fields (<a class="collapse-fieldset" href="#">Collapse</a>) - <a class="select-all-fieldset" href="#">Select All</a> / <a class="select-none-fieldset" href="#">Select None</a></h3>
+            </legend>
+            <form name='edit-fields' action='/account/settings/exported_fields/list/edit/do' method='POST'
+                  enctype="multipart/form-data">{% csrf_token %}
+                {% for field in edit_exported_fields_form %}
+                <div class="form-row">
+                    {{ field.errors }}
+                    {{ field }}
+                </div>
                 {% endfor %}
                 <input class='save-button' type='submit' style='clear: left; float: left;' value='Save'/>
                 <a style="float: left; font-size: 1.1em; margin: 5px 0 0 10px"

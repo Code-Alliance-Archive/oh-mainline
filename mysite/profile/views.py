@@ -28,6 +28,7 @@ import urllib
 import collections
 import logging
 import difflib
+from django.db.models import Q
 
 from django.utils import simplejson
 
@@ -57,7 +58,7 @@ import mysite.profile.view_helpers
 from mysite.profile.models import \
         Person, Tag, TagType, \
         Link_Project_Tag, Link_Person_Tag, \
-        DataImportAttempt, PortfolioEntry, Citation, FormResponse, FormQuestion, FormAnswer
+        DataImportAttempt, PortfolioEntry, Citation, FormResponse, FormQuestion, FormAnswer, ExportQuestion
 from mysite.search.models import Project
 from mysite.base.decorators import view, as_view, has_permissions, _has_permissions, _has_group
 import mysite.profile.forms
@@ -70,6 +71,7 @@ import mysite.account.views
 from mysite.settings import MEDIA_ROOT, MEDIA_URL
 
 # }}}
+
 
 @login_required
 @csrf_protect
@@ -400,8 +402,7 @@ def prepare_person_row(person, questions_to_export, user_id, can_view_email):
 
     person_responses = get_card_fields_with_icons_together(person, user_id)
 
-    person_row = [person.user.first_name,
-            person.user.last_name]
+    person_row = [person.user.first_name, person.user.last_name, person.location_display_name, person.zoho_id]
     if (can_view_email):
         person_row.append(person.user.email)
 
@@ -410,12 +411,11 @@ def prepare_person_row(person, questions_to_export, user_id, can_view_email):
 
     return person_row
 
-
 def export_to_csv(people, questions_to_export, user_id, can_view_email):
     response = HttpResponse(content_type = "text/csv")
     response['Content-Disposition'] = 'attachment; filename="sc4g-people.csv"'
     writer = csv.writer(response)
-    basic_fields = ['First name', 'Last name']
+    basic_fields = ['First name', 'Last name', 'Location', 'Zoho ID']
     if (can_view_email):
         basic_fields.append('E-mail')
     writer.writerow(basic_fields + questions_to_export)
@@ -428,22 +428,27 @@ def export_to_json(people, questions_to_export, user_id, can_view_email):
     response['Content-Disposition'] = 'attachment; filename="sc4g-people.json"'
     to_export = []
     for person in people:
-        to_export.append(get_all_person_fields(person, user_id, can_view_email))
+        to_export.append(get_all_person_fields(person, user_id, can_view_email, questions_to_export))
     response.content = simplejson.dumps(to_export)
     return response
 
-def get_all_person_fields(person, user_id, can_view_email):
-    fields = get_card_fields_with_icons_together(person, user_id)
+def get_all_person_fields(person, user_id, can_view_email, questions_to_export):
+    fields = dict()
     fields['First name'] = person.user.first_name
     fields['Last name'] = person.user.last_name
+    fields['Location'] = person.location_display_name
+    fields['Zoho ID'] = person.zoho_id
     if (can_view_email):
         fields['E-mail'] = person.user.email
+    for question in questions_to_export:
+        fields[question] = [response.value for response in FormResponse.objects.filter(
+            Q(question__name__iexact=question) and Q(person__pk=person.id))]
     return fields
 
 def export_to_html(people, questions_to_export, user_id, can_view_email):
     response = HttpResponse(content_type = "text/html")
     response['Content-Disposition'] = 'attachment; filename="sc4g-people.html"'
-    fields_to_export = ['First name', 'Last name']
+    fields_to_export = ['First name', 'Last name', 'Location', 'Zoho ID']
     if (can_view_email):
         fields_to_export.append('E-mail')
     table = HTML.Table(header_row=fields_to_export + questions_to_export)
@@ -456,15 +461,22 @@ def export_to_xml(people, questions_to_export, user_id, can_view_email):
     response = HttpResponse(content_type = "application/xml")
     response['Content-Disposition'] = 'attachment; filename="sc4g-people.xml"'
     xml = XMLBuilder('volunteers')
+    empty = "N/A"
     for person in people:
         with xml.volunteer:
-            xml.firstName(person.user.first_name)
-            xml.lastName(person.user.last_name)
+            xml.firstName(person.user.first_name or empty)
+            xml.lastName(person.user.last_name or empty)
+            xml.locationDisplayName(person.location_display_name or empty)
+            xml.zohoId(person.zoho_id or empty)
             if (can_view_email):
-                xml.email(person.user.email)
-            with xml.form_responses:
-                for key, value in get_card_fields_with_icons_together(person, user_id).items():
-                    xml.form_response(value, question=key)
+                xml.email(person.user.email or empty)
+
+            question_response = [(key, [value for value in FormResponse.objects.filter(
+                Q(question__name__iexact=key) and Q(person__pk=person.id))]) for key in questions_to_export]
+            for key, values in question_response:
+                with xml.question(name=key):
+                    for value in values:
+                        xml.form_response(value.value)
 
     response.content = str(xml)
     return response
@@ -494,9 +506,11 @@ def people_export(request):
         else:
             date_from = parser.parse(date_range[0])
             date_to = date_from
+        if date_from == date_to:
+            date_to += datetime.timedelta(days=1)
         people = [person for person in people if person.date_added >= date_from and person.date_added <= date_to]
 
-    questions_to_export = [field.question.display_name for field in CardDisplayedQuestion.objects.filter(person__user__pk=request.user.id)]
+    questions_to_export = [field.question.display_name for field in ExportQuestion.objects.filter(person__user__pk=request.user.id)]
 
     format = request.GET.get('format', 'csv')
     if format in ['csv', 'json', 'html', 'xml']:

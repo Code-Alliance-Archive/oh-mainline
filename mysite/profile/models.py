@@ -148,6 +148,11 @@ class ListDisplayedQuestion(models.Model):
     question = models.ForeignKey(FormQuestion, null=False, blank=False)
 
 
+class ExportQuestion(models.Model):
+    person = models.ForeignKey('Person', null=False, blank=False)
+    question = models.ForeignKey(FormQuestion, null=False, blank=False)
+
+
 class Icon(models.Model):
     name = models.CharField(unique=True, blank=False, null=False, max_length=100)
     display_name = models.CharField(blank=False, null=False, max_length=100)
