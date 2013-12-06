@@ -307,7 +307,7 @@ class Person(models.Model):
         try:
             return self.photo.url
         except (IOError, ValueError):
-            return '/static/images/profile-photos/penguin.png'
+            return '/static/images/profile-photos/dots.png'
 
     @staticmethod
     def get_from_session_key(session_key):
