@@ -36,7 +36,7 @@ NB: All forms in pages that descend from this have the same name.
   js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
-        <div class="fb-share-button" data-href="http://www.socialcoding4good.org/" data-type="button_count"></div>
+        <div class="fb-share-button" data-href="http://{{ request.META.HTTP_HOST }}" data-type="button_count"></div>
 
         <a href="https://twitter.com/share" class="twitter-share-button"
            data-text="Just volunteered @sc4g - contributing my tech skills to nonprofit, open source software projects for good! www.socialcoding4good.org"
@@ -48,12 +48,12 @@ NB: All forms in pages that descend from this have the same name.
 
         <script src="//platform.linkedin.com/in.js" type="text/javascript">lang: en_US</script>
         <div class="linkedin-share-button">
-            <script type="IN/Share" data-url="http://www.socialcoding4good.org" data-counter="right"></script>
+            <script type="IN/Share" data-url="http://{{ request.META.HTTP_HOST }}" data-counter="right"></script>
         </div>
 
         <div class="google-plus-share-button">
             <div class="g-plus" data-action="share" data-annotation="bubble"
-                 data-href="http://www.socialcoding4good.org"></div>
+                 data-href="http://{{ request.META.HTTP_HOST }}"></div>
             <script type="text/javascript">
     (function() {
         var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
