@@ -397,10 +397,16 @@ def manyToString(many):
         res += obj.name + "; "
     return res
 
-def prepare_person_row(person, questions_to_export, user_id, can_view_email):
+def prepare_person_row(person, questions_to_export, user_id, can_view_email, separator):
     empty = "N/A"
 
-    person_responses = get_card_fields_with_icons_together(person, user_id)
+    person_responses = dict()
+    for question in questions_to_export:
+        person_responses[question] = str(separator).join([response.value for response in FormResponse.objects.filter(
+            question__display_name__iexact=question, person__pk=person.id)
+        ])
+        if len(person_responses[question]) <= 0:
+            person_responses[question] = empty
 
     person_row = [person.user.first_name, person.user.last_name, person.location_display_name, person.zoho_id]
     if (can_view_email):
@@ -420,7 +426,7 @@ def export_to_csv(people, questions_to_export, user_id, can_view_email):
         basic_fields.append('E-mail')
     writer.writerow(basic_fields + questions_to_export)
     for person in people:
-        writer.writerow(prepare_person_row(person, questions_to_export, user_id, can_view_email))
+        writer.writerow(prepare_person_row(person, questions_to_export, user_id, can_view_email, ';\t'))
     return response
 
 def export_to_json(people, questions_to_export, user_id, can_view_email):
@@ -442,7 +448,7 @@ def get_all_person_fields(person, user_id, can_view_email, questions_to_export):
         fields['E-mail'] = person.user.email
     for question in questions_to_export:
         fields[question] = [response.value for response in FormResponse.objects.filter(
-            Q(question__name__iexact=question) and Q(person__pk=person.id))]
+            Q(question__display_name__iexact=question) and Q(person__pk=person.id))]
     return fields
 
 def export_to_html(people, questions_to_export, user_id, can_view_email):
@@ -453,7 +459,7 @@ def export_to_html(people, questions_to_export, user_id, can_view_email):
         fields_to_export.append('E-mail')
     table = HTML.Table(header_row=fields_to_export + questions_to_export)
     for person in people:
-        table.rows.append(prepare_person_row(person, questions_to_export, user_id, can_view_email))
+        table.rows.append(prepare_person_row(person, questions_to_export, user_id, can_view_email, ', '))
     response.content = str(table)
     return response
 
@@ -472,7 +478,7 @@ def export_to_xml(people, questions_to_export, user_id, can_view_email):
                 xml.email(person.user.email or empty)
 
             question_response = [(key, [value for value in FormResponse.objects.filter(
-                Q(question__name__iexact=key) and Q(person__pk=person.id))]) for key in questions_to_export]
+                Q(question__display_name__iexact=key) and Q(person__pk=person.id))]) for key in questions_to_export]
             for key, values in question_response:
                 with xml.question(name=key):
                     for value in values:
