@@ -180,6 +180,7 @@ INSTALLED_APPS = (
     'djkombu',
     'django_crontab',
     'corsheaders',
+    'tinymce'
 )
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -217,18 +218,6 @@ logging.basicConfig(
 ACCOUNT_INVITATION_DAYS=7
 INVITE_MODE=False # Enable this on production site ...?
 INVITATIONS_PER_USER=100
-
-DEFAULT_FROM_EMAIL = 'sc4g.test@gmail.com'
-
-EMAIL_HOST = 'smtp.gmail.com'    # The host to use for sending email.
-
-EMAIL_USE_TLS = True    # Whether to use a secure connection when talking to the SMTP server. Default: False
-
-EMAIL_PORT = 587    # Port to use for the server. Default: 25
-
-EMAIL_HOST_USER = 'sc4g.test@gmail.com'    # Username to use for the SMTP server defined in EMAIL_HOST.
-
-EMAIL_HOST_PASSWORD = 'sc4g-test'    # Password to use for the SMTP server.
 
 CACHES = {
     'default': {
@@ -368,6 +357,24 @@ SC4G_BASIC_AUTH_TOKEN = 'a2FsYTprYWxh'
 SC4G_FILES_URL = 'http://test.socialcoding4good.org/sites/default/files/webform/'
 
 ZOHO_AUTH_TOKEN = "360f9b1e917ef044f08f68944c188f76"
+
+TINYMCE_DEFAULT_CONFIG = {
+    'theme': "advanced",
+    'cleanup_on_startup': True,
+    'height': 500,
+    'theme_advanced_buttons1' : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,"
+                                "|,formatselect,|,hr,removeformat,visualaid,|,sub,sup,|,charmap",
+	'theme_advanced_buttons2' : "bullist,numlist,|,outdent,indent,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code",
+    'theme_advanced_buttons3' : "",
+    'forced_root_block' : 'div',
+}
+
+DEFAULT_FROM_EMAIL = 'sc4g.test@gmail.com'
+EMAIL_HOST = 'smtp.gmail.com'    # The host to use for sending email.
+EMAIL_USE_TLS = True    # Whether to use a secure connection when talking to the SMTP server. Default: False
+EMAIL_PORT = 587    # Port to use for the server. Default: 25
+EMAIL_HOST_USER = 'sc4g.test@gmail.com'    # Username to use for the SMTP server defined in EMAIL_HOST.
+EMAIL_HOST_PASSWORD = 'sc4g-test'    # Password to use for the SMTP server.
 
 ### Include a user's customizations
 try:

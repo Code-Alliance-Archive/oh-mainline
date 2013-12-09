@@ -238,6 +238,7 @@ class Person(models.Model):
     language_spoken = models.TextField(default="", blank=True)
     BOOL_CHOICES = ((True, 'List'), (False, 'Cards'))
     view_list = models.BooleanField(default=False, choices=BOOL_CHOICES)
+    referring_url = models.URLField(default='', blank=True, max_length=2048)
 
 
     def get_responses(self):

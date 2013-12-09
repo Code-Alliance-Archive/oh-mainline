@@ -15,6 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from django.db import models
+from tinymce.models import HTMLField
 
 class InvitationRequest(models.Model):
     first_name = models.CharField(max_length=255)
@@ -24,3 +25,15 @@ class InvitationRequest(models.Model):
     - What open source projects are you involved with?
     - What do you wish were better or easier about open source?
     - "Free software" or "Open source"?"""
+
+class WelcomeEmailTemplate(models.Model):
+    referring_url = models.URLField(blank=True, max_length=2048, unique=True)
+    subject = models.CharField(max_length=998)
+    body = HTMLField()
+
+    def __unicode__(self):
+        if (not self.referring_url):
+            text = 'default'
+        else:
+            text = self.referring_url
+        return text

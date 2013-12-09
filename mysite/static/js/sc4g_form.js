@@ -156,7 +156,12 @@ jQuery(document).ready(function($) {
                     $(topError).remove();
                 }
 
-                $.post('http://127.0.0.1:8000/account/signup', { data: JSON.stringify(questions) })
+                var postData = {
+                    questions: questions,
+                    referringUrl: document.referrer
+                }
+
+                $.post('http://127.0.0.1:8000/account/signup', { data: JSON.stringify(postData) })
                     .success(function(response) {
                         formElement.attr('data-success', 'true');
                         formElement.submit();

@@ -9,6 +9,7 @@ sudo pip install django-crontab
 sudo pip install django-file-resubmit
 sudo pip install django-cors-headers
 sudo pip install numpy
+sudo pip install django-tinymce
 rm -vf mysite/site.db
 python manage.py syncdb --noinput
 python manage.py migrate

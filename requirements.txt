@@ -10,3 +10,4 @@ django-crontab
 django-file-resubmit
 django-cors-headers
 numpy
+django-tinymce

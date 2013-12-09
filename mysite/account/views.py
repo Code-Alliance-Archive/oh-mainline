@@ -52,9 +52,11 @@ from mysite.settings import MEDIA_ROOT, SC4G_BASIC_AUTH_TOKEN, SC4G_FILES_URL, M
 # FIXME: We did this because this decorator used to live here
 # and lots of other modules refer to it as mysite.account.views.view.
 # Let's fix this soon.
+from mysite.account.models import WelcomeEmailTemplate
 from mysite.base.decorators import view, has_group, _has_group
 from forms import EditFieldsForm, EditFieldsDisplayedInSearchForm, EditViewTypeForm, EditExportedFieldsForm
 import django.contrib.auth.views
+from django.template import Template, Context
 # }}}
 
 def signup_do(request):
@@ -93,9 +95,9 @@ def signup(request, signup_form=None):
 
 def signup_request(request):
     try:
-        post_data = request.POST
-        questions_json = post_data.get(u'data', [])
-        questions_json = json.loads(questions_json)
+        post_json = json.loads(request.POST.get(u'data', []))
+        questions_json = post_json['questions']
+        referring_url = post_json['referringUrl']
 
         email = __getFieldValue__(questions_json, u'Email')
         first_name = __getFieldValue__(questions_json, u'First Name')
@@ -116,7 +118,7 @@ def signup_request(request):
         user.save()
 
         person = user.get_profile()
-        send_registration_email(email=email, user=user, hostname=request.get_host(), random_password=random_password)
+        person.referring_url = referring_url
 
         answers = dict()
         responses = dict()
@@ -178,6 +180,7 @@ def signup_request(request):
     except (Exception, RuntimeError) as e:
         raise e
 
+    send_registration_email(email=email, user=user, hostname=request.get_host(), random_password=random_password)
     response = HttpResponse(status=200)
     response['Access-Control-Allow-Origin'] = '*'
     return response
@@ -206,21 +209,31 @@ def generate_random_file_path(filename):
     return random_directory + filename
 
 def send_registration_email(email, user, hostname, random_password):
+    person = user.get_profile()
+    email_template = get_email_template(person.referring_url)
+    subject = ''.join(email_template.subject.splitlines())
+    context = get_context(user, hostname, random_password)
+    content = Template(email_template.body).render(context)
+    send_message(email, subject, content)
 
-        subject = render_to_string('registration/registration_email_subject.txt')
-        # Email subject *must not* contain newlines
-        subject = ''.join(subject.splitlines())
+def get_email_template(referring_url):
+    email_template_exists = WelcomeEmailTemplate.objects.filter(referring_url=referring_url).count() > 0
+    if email_template_exists:
+        email_template = WelcomeEmailTemplate.objects.get(referring_url=referring_url)
+    else:
+        email_template = WelcomeEmailTemplate.objects.get(id=1)
+    return email_template
 
-        message = render_to_string('registration/registration_email.txt',
-                                   {'user': user,
-                                    'hostname': hostname,
-                                    'random_password': random_password})
+def get_context(user, hostname, random_password):
+    return Context({'user': user, 'hostname': hostname, 'random_password': random_password})
 
-        msg = django.core.mail.EmailMessage(subject=subject,
-                                            body=message,
-                                            to=[email]
-                                            )
-        msg.send()
+def send_message(receiver, subject, content):
+    message = django.core.mail.EmailMessage(subject=subject,
+                                        body=content,
+                                        to=[receiver]
+                                        )
+    message.content_subtype = "html"
+    message.send()
 
 def __getFieldValue__(questions, label):
     for question in questions:
