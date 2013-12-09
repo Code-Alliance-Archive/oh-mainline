@@ -333,7 +333,7 @@ def edit_person_info_do(request):
     edit_info_form = mysite.profile.forms.EditInfoForm(request.POST, request.FILES, prefix='edit-tags', person=person)
 
     if edit_info_form.is_valid() != True:
-        return edit_info(request,edit_info_form=edit_info_form, has_errors=True)
+        return edit_info(request,edit_info_form=edit_info_form, has_errors=True, username=person.user.username)
 
     FormResponse.objects.filter(person=person).delete()
     person.is_updated = True
