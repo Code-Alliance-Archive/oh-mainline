@@ -166,12 +166,12 @@ class EditPhotoForm(django.forms.ModelForm):
         data_fd = StringIO.StringIO(data)
 
         w, h = get_image_dimensions(data_fd)
-        if w > 200:
+        if w > 260:
             # Scale it down.
             too_big = mysite.base.depends.Image.open(StringIO.StringIO(data))
             format = too_big.format
-            new_w = int(200)
-            new_h = int((h * 1.0 / w) * 200)
+            new_w = int(260)
+            new_h = int((h * 1.0 / w) * 260)
 
             smaller = too_big.resize((new_w, new_h),
                                      mysite.base.depends.Image.ANTIALIAS)
