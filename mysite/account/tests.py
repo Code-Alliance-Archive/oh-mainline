@@ -215,7 +215,7 @@ class EditPhoto(TwillTests):
             p = Person.objects.get(user__username='paulproteus')
             image_as_stored = mysite.base.depends.Image.open(p.photo.file)
             w, h = image_as_stored.size
-            self.assertEqual(w, 200)
+            self.assertEqual(w, 260)
 
     def test_invalid_photo(self):
         """
