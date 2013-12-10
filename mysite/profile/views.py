@@ -420,13 +420,13 @@ def prepare_person_row(person, questions_to_export, user_id, can_view_email, sep
 def export_to_csv(people, questions_to_export, user_id, can_view_email):
     response = HttpResponse(content_type = "text/csv")
     response['Content-Disposition'] = 'attachment; filename="sc4g-people.csv"'
-    writer = csv.writer(response)
+    writer = csv.writer(response, delimiter='\t')
     basic_fields = ['First name', 'Last name', 'Location', 'Zoho ID']
     if (can_view_email):
         basic_fields.append('E-mail')
     writer.writerow(basic_fields + questions_to_export)
     for person in people:
-        writer.writerow(prepare_person_row(person, questions_to_export, user_id, can_view_email, ';\t'))
+        writer.writerow(prepare_person_row(person, questions_to_export, user_id, can_view_email, ', '))
     return response
 
 def export_to_json(people, questions_to_export, user_id, can_view_email):
