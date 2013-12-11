@@ -40,6 +40,7 @@ from xmlbuilder import XMLBuilder
 import urllib2
 import urllib
 from xml.dom import minidom
+import datetime
 
 ## roundrobin() taken from http://docs.python.org/library/itertools.html
 
@@ -320,6 +321,24 @@ def prepare_person_xml_row(xml, index, person):
             responses_values = ','.join(str(item.value) for item in responses)
             xml.FL(responses_values, val=responses[0].question.name)
             del responses[:]
+
+def push_volunteer_changes_to_zoho_crm():
+    try:
+        people_to_insert = mysite.profile.models.Person.objects.filter(Q(date_added=datetime.date.today) and Q(uploaded_to_zoho=False))
+        add_people_to_zoho_CRM(people_to_insert)
+        people_to_update = mysite.profile.models.Person.objects.filter(Q(is_updated=True))
+        update_people_in_zoho_CRM(people_to_update)
+        people_to_delete = mysite.profile.models.PeopleToRemoveFromZoho.objects.all()
+        delete_people_from_zoho_CRM(people_to_delete)
+    except Exception as e:
+        logging.error(e.message)
+        return
+
+    if people_to_insert:
+        people_to_insert.update(uploaded_to_zoho=True)
+
+    if people_to_update:
+        people_to_update.update(is_updated=False)
 
 def update_people_in_zoho_CRM(people, auth_token = ZOHO_AUTH_TOKEN):
     for person in people:
