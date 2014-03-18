@@ -353,11 +353,6 @@ CRONJOBS = [
     ('@daily', 'mysite.cron.push_volunteers_to_zoho_crm')
 ]
 
-SC4G_BASIC_AUTH_TOKEN = 'a2FsYTprYWxh'
-SC4G_FILES_URL = 'http://test.socialcoding4good.org/sites/default/files/webform/'
-
-ZOHO_AUTH_TOKEN = "360f9b1e917ef044f08f68944c188f76"
-
 TINYMCE_DEFAULT_CONFIG = {
     'theme': "advanced",
     'cleanup_on_startup': True,
@@ -368,13 +363,6 @@ TINYMCE_DEFAULT_CONFIG = {
     'theme_advanced_buttons3' : "",
     'forced_root_block' : 'div',
 }
-
-DEFAULT_FROM_EMAIL = 'sc4g.test@gmail.com'
-EMAIL_HOST = 'smtp.gmail.com'    # The host to use for sending email.
-EMAIL_USE_TLS = True    # Whether to use a secure connection when talking to the SMTP server. Default: False
-EMAIL_PORT = 587    # Port to use for the server. Default: 25
-EMAIL_HOST_USER = 'sc4g.test@gmail.com'    # Username to use for the SMTP server defined in EMAIL_HOST.
-EMAIL_HOST_PASSWORD = 'sc4g-test'    # Password to use for the SMTP server.
 
 ### Include a user's customizations
 try:

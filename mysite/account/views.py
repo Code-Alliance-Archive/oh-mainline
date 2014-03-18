@@ -27,7 +27,7 @@ from django.core.urlresolvers import reverse
 from django.utils.safestring import mark_safe
 import django_authopenid.views
 from django.contrib.auth.models import User, Group
-from django.template.loader import render_to_string
+from django.conf import settings
 from mysite.base.models import Experience, Organization, Skill, Language
 from mysite.profile.models import Person, Cause, Heard_From, TimeToCommit, FormQuestion, FormAnswer, FormResponse, CardDisplayedQuestion, ListDisplayedQuestion, ExportQuestion
 
@@ -47,7 +47,7 @@ import mysite.account.forms
 from mysite.base.view_helpers import render_response
 from mysite.account.view_helpers import clear_user_sessions
 import mysite.profile.views
-from mysite.settings import MEDIA_ROOT, SC4G_BASIC_AUTH_TOKEN, SC4G_FILES_URL, MEDIA_URL
+from mysite.settings import MEDIA_ROOT, MEDIA_URL
 
 # FIXME: We did this because this decorator used to live here
 # and lots of other modules refer to it as mysite.account.views.view.
@@ -132,8 +132,8 @@ def signup_request(request):
                 file_url = question.get(u'responses')[0]
                 try:
                     filename = str(file_url).split('/')[-1]
-                    new_request = urllib2.Request(SC4G_FILES_URL + filename)
-                    new_request.add_header('Authorization', 'Basic %s' % SC4G_BASIC_AUTH_TOKEN)
+                    new_request = urllib2.Request(settings.SC4G_FILES_URL + filename)
+                    new_request.add_header('Authorization', 'Basic %s' % settings.SC4G_BASIC_AUTH_TOKEN)
                     new_response = urllib2.urlopen(new_request)
 
                     new_file_path = generate_random_file_path(filename)

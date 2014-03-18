@@ -44,9 +44,6 @@ import datetime
 
 ## roundrobin() taken from http://docs.python.org/library/itertools.html
 
-# Name constants
-from mysite.settings import GITHUB_USERNAME_BASE_PATH, GOOGLE_CODE_USERNAME_BASE_PATH, ZOHO_AUTH_TOKEN
-
 SUGGESTION_COUNT = 6
 DEFAULT_CACHE_TIMESPAN = 86400 * 7
 
@@ -340,7 +337,7 @@ def push_volunteer_changes_to_zoho_crm():
     if people_to_update:
         people_to_update.update(is_updated=False)
 
-def update_people_in_zoho_CRM(people, auth_token = ZOHO_AUTH_TOKEN):
+def update_people_in_zoho_CRM(people, auth_token = settings.ZOHO_AUTH_TOKEN):
     for person in people:
         xml = XMLBuilder('Contacts')
         prepare_person_xml_row(xml, 1, person)
@@ -351,7 +348,7 @@ def update_people_in_zoho_CRM(people, auth_token = ZOHO_AUTH_TOKEN):
         if (response.code != 200):
             logging.error("Cannot update person in Zoho CRM. " + response)
 
-def add_people_to_zoho_CRM(people, auth_token = ZOHO_AUTH_TOKEN):
+def add_people_to_zoho_CRM(people, auth_token = settings.ZOHO_AUTH_TOKEN):
     xml = XMLBuilder('Contacts')
     for counter, person in enumerate(people):
         prepare_person_xml_row(xml, counter+1, person)
@@ -375,7 +372,7 @@ def add_people_to_zoho_CRM(people, auth_token = ZOHO_AUTH_TOKEN):
         else:
             logging.error("Cannot upload people to Zoho CRM. " + response_body)
 
-def delete_people_from_zoho_CRM(people, auth_token = ZOHO_AUTH_TOKEN):
+def delete_people_from_zoho_CRM(people, auth_token = settings.ZOHO_AUTH_TOKEN):
     for person in people:
         if not mysite.base.decorators._has_group(person.user, 'VOLUNTEER'):
             continue
