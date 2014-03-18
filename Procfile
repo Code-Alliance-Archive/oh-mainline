@@ -2,4 +2,4 @@
 # deploy OpenHatch on Heroku. See our docs at
 # http://openhatch.readthedocs.org/en/latest/deployment/heroku.html
 # for more information.
-web: ./mysite/manage.py runserver 0.0.0.0:$PORT
+web: ./manage.py runserver --settings=mysite.settings_sc4g 0.0.0.0:$PORT
