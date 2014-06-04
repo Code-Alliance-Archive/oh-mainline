@@ -114,6 +114,7 @@ TEMPLATE_LOADERS = (
 
 MIDDLEWARE_CLASSES = [
     'mysite.base.middleware.DetectLogin', # This must live on top of Auth + Session middleware
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'mysite.base.middleware.StaticGeneratorMiddlewareOnlyWhenAnonymous',
     'sessionprofile.middleware.SessionProfileMiddleware',
