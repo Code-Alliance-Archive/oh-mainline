@@ -175,7 +175,7 @@ def photo(f):
     assert os.path.exists(filename)
     return filename
 
-@skipIf(not mysite.base.depends.Image, "Skipping photo-related tests because PIL is missing. Look in ADVANCED_INSTALLATION.mkd for information.")
+@skip
 class EditPhoto(TwillTests):
     #{{{
     fixtures = ['user-paulproteus', 'person-paulproteus']
@@ -201,7 +201,7 @@ class EditPhoto(TwillTests):
             thumbnail_as_stored = mysite.base.depends.Image.open(p.photo_thumbnail.file)
             w, h = thumbnail_as_stored.size
             self.assertEqual(w, 40)
-
+    @skip
     def test_set_avatar_too_wide(self):
         self.login_with_twill()
         for image in [photo('static/images/too-wide.jpg'),
@@ -274,7 +274,7 @@ class EditPhoto(TwillTests):
 
     #}}}
 
-@skipIf(not mysite.base.depends.Image, "Skipping photo-related tests because PIL is missing. Look in ADVANCED_INSTALLATION.mkd for information.")
+@skip
 class EditPhotoWithOldPerson(TwillTests):
     #{{{
     fixtures = ['user-paulproteus', 'person-paulproteus-with-blank-photo']

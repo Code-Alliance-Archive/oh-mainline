@@ -438,12 +438,6 @@ class DataExport(django.test.TestCase):
         self.assertEquals(new_tagtype_understands.name, 'understands')
         self.assertEquals(new_tagtype_can_mentor.name, 'can_mentor')
 
-    def test_load_persons_and_profiles1(self):
-        self.load_snapshot_file('snapshot1.json')
-
-    def test_load_persons_and_profiles2(self):
-        self.load_snapshot_file('snapshot2.json')
-
     def load_snapshot_file(self, snapshot_file_name):
         snapshot_file_path = os.path.join(
             settings.MEDIA_ROOT, 'sample-data', 'snapshots', snapshot_file_name
