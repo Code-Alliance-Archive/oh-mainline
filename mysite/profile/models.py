@@ -184,52 +184,51 @@ class Person(models.Model):
     photo = models.ImageField(upload_to=
                               lambda a, b: 'static/photos/profile-photos/' +
                                            generate_person_photo_path(a, b),
-                              default='')
+                              default='', blank=True)
     photo_thumbnail = models.ImageField(upload_to=
                                         lambda a, b: 'static/photos/profile-photos/' +
                                                      generate_person_photo_path(a, b, suffix="-thumbnail"),
                                         default='',
-                                        null=True)
+                                        blank=True)
 
     photo_thumbnail_30px_wide = models.ImageField(upload_to=
                                                   lambda a, b: 'static/photos/profile-photos/' +
                                                                generate_person_photo_path(a, b, suffix="-thumbnail-30px-wide"),
-                                                  default='', null=True)
+                                                  default='', blank=True)
 
     photo_thumbnail_20px_wide = models.ImageField(upload_to=
                                                   lambda a, b: 'static/photos/profile-photos/' +
                                                                generate_person_photo_path(a, b, suffix="-thumbnail-20px-wide"),
-                                                  default='', null=True)
+                                                  default='', blank=True)
 
-    blacklisted_repository_committers = models.ManyToManyField(RepositoryCommitter)
     dont_guess_my_location = models.BooleanField(default=False)
     location_confirmed = models.BooleanField(default=False)
     location_display_name = models.CharField(max_length=255, blank=True,
                                              default=DEFAULT_LOCATION,
                                              verbose_name='Location')
-    latitude = models.FloatField(null=False, default=-37.3049962)
-    longitude = models.FloatField(null=False, default=-12.6790445)
+    latitude = models.FloatField(blank=True, default=-37.3049962)
+    longitude = models.FloatField(blank=True, default=-12.6790445)
 
     date_added = models.DateTimeField(default=datetime.datetime.now(), auto_now_add=True)
     uploaded_to_zoho = models.BooleanField(default=False)
     resume = models.FileField(upload_to=
                               lambda a, b: 'static/resumes/' +
                                            generate_person_photo_path(a, b),
-                              default='', max_length=100)
+                              default='', max_length=100, blank=True)
 
     email_me_re_projects = models.BooleanField(default=True,
                                                verbose_name='Email me periodically about activity in my projects')
     skill = models.ManyToManyField(Skill)
-    organization = models.ManyToManyField(Organization)
+    organization = models.ManyToManyField(Organization, blank=True)
     experience = models.ForeignKey(Experience, default=1)
-    cause = models.ManyToManyField(Cause)
-    language = models.ManyToManyField(Language)
+    cause = models.ManyToManyField(Cause, blank=True)
+    language = models.ManyToManyField(Language, blank=True)
     opensource = models.NullBooleanField(default=None)
     time_to_commit = models.ForeignKey(TimeToCommit, default=1)
     irc_nick = models.CharField(max_length=30, blank=True, null=True)
     linked_in_url = models.URLField(default="", blank=True)
     private = models.BooleanField(default=True)
-    heard_from = models.ManyToManyField(Heard_From)
+    heard_from = models.ManyToManyField(Heard_From, blank=True)
     comment = models.TextField(default="", blank=True)
     subscribed = models.NullBooleanField(default=None)
     github_name = models.TextField(default="", blank=True)
