@@ -14,7 +14,8 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from mysite.profile.models import Person, DataImportAttempt, Tag, TagType, PortfolioEntry, Citation
+from mysite.profile.models import Person, DataImportAttempt, Tag, TagType, PortfolioEntry, Citation, FormAnswer, \
+    FormQuestion, FormResponse
 from django.contrib import admin
 from mysite.account.models import WelcomeEmailTemplate
 
@@ -25,3 +26,22 @@ admin.site.register(TagType)
 admin.site.register(PortfolioEntry)
 admin.site.register(Citation)
 admin.site.register(WelcomeEmailTemplate)
+
+class FormAnswerAdmin(admin.ModelAdmin):
+    model = FormAnswer
+    list_display = ('id','question', 'value')
+    search_fields = ('value',)
+
+class FormQuestionAdmin(admin.ModelAdmin):
+    model = FormQuestion
+    list_display = ('name', 'type', 'required')
+    search_fields = ('display_name',)
+
+class FormResponseAdmin(admin.ModelAdmin):
+    model = FormResponse
+    list_display = ('question','person', 'value')
+    search_fields = ('person',)
+
+admin.site.register(FormQuestion, FormQuestionAdmin)
+admin.site.register(FormResponse, FormResponseAdmin)
+admin.site.register(FormAnswer, FormAnswerAdmin)

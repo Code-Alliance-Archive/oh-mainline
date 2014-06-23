@@ -115,6 +115,9 @@ class FormQuestion(models.Model):
     type = models.CharField(blank=False, null=False, max_length=50)
     required = models.BooleanField(default=False, null=False, blank=False)
 
+    def __str__(self):
+        return self.display_name
+
     def get_icon(self, all_icons):
         question_name = self.name.lower()
         if not 'username' in question_name and not 'url' in question_name:
@@ -129,11 +132,15 @@ class FormAnswer(models.Model):
     question = models.ForeignKey(FormQuestion)
     value = models.CharField(default='', blank=True, null=True, max_length=150)
 
+    def __str__(self):
+        return self.value
+
 
 class FormResponse(models.Model):
     question = models.ForeignKey(FormQuestion)
     person = models.ForeignKey('Person')
     value = models.CharField(default='', blank=True, null=True, max_length=150)
+
     def __str__(self):
         return self.value
 
