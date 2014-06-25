@@ -147,10 +147,17 @@ def signup_request(request):
                     if e.code == 404:
                         question[u'responses'] = []
 
-            if FormQuestion.objects.filter(name__iexact=question_name).count() > 0:
-                FormQuestion.objects.filter(name__iexact=question_name) \
+            if FormQuestion.objects.filter(display_name__iexact=question_name).count() > 0:
+                FormQuestion.objects.filter(display_name__iexact=question_name) \
                     .update(type=question.get(u'inputType'), required=question.get(u'required'))
-                form_question = FormQuestion.objects.get(name__iexact=question_name)
+                form_question = FormQuestion.objects.get(display_name__iexact=question_name)
+
+            elif FormQuestion.objects.filter(name__iexact=question_name).count() > 0:
+                FormQuestion.objects.filter(name__iexact=question_name) \
+                    .update(type=question.get(u'inputType'), required=question.get(u'required'),
+                            display_name=question_name)
+                form_question = FormQuestion.objects.get(display_name__iexact=question_name)
+
             else:
                 form_question = FormQuestion(name=question_name,
                                              display_name=question_name,
