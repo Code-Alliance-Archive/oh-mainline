@@ -116,7 +116,7 @@ class FormQuestion(models.Model):
     required = models.BooleanField(default=False, null=False, blank=False)
 
     def __str__(self):
-        return self.display_name
+        return self.name
 
     def get_icon(self, all_icons):
         question_name = self.name.lower()

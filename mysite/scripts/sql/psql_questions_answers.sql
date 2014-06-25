@@ -1,21 +1,21 @@
 
-INSERT INTO profile_formquestion (display_name, required, type, id, name) VALUES ('Company', false, 'text', 1, 'Company, Organization, or Event Where You Learned About SocialCoding4Good');
-INSERT INTO profile_formquestion (display_name, required, type, id, name) VALUES ('Organizations', false, 'multi', 2, 'HFOSS Organizations That Interest You');
-INSERT INTO profile_formquestion (display_name, required, type, id, name) VALUES ('Causes', false, 'multi', 3, 'Causes That Interest You');
-INSERT INTO profile_formquestion (display_name, required, type, id, name) VALUES ('Time to Commit', true, 'multi', 4, 'How much time would you like to commit to volunteering?');
-INSERT INTO profile_formquestion (display_name, required, type, id, name) VALUES ('Skills', true, 'multi', 5, 'Skills');
-INSERT INTO profile_formquestion (display_name, required, type, id, name) VALUES ('Resume', false, 'file', 6, 'Resume');
-INSERT INTO profile_formquestion (display_name, required, type, id, name) VALUES ('LinkedIn, OpenHatch or CoderWall Profile URL', false, 'url', 7, 'LinkedIn, OpenHatch or CoderWall Profile URL');
-INSERT INTO profile_formquestion (display_name, required, type, id, name) VALUES ('Have you previously contributed to open source projects?', false, 'single', 8, 'Have you previously contributed to open source projects?');
-INSERT INTO profile_formquestion (display_name, required, type, id, name) VALUES ('GitHub Username', false, 'text', 9, 'GitHub Username');
-INSERT INTO profile_formquestion (display_name, required, type, id, name) VALUES ('Google Code Username', false, 'text', 10, 'Google Code Username');
-INSERT INTO profile_formquestion (display_name, required, type, id, name) VALUES ('SourceForge, Ohloh or Other Username', false, 'text', 11, 'SourceForge, Ohloh or Other Username');
-INSERT INTO profile_formquestion (display_name, required, type, id, name) VALUES ('Languages', false, 'multi', 12, 'Programming Languages, Frameworks, Environments');
-INSERT INTO profile_formquestion (display_name, required, type, id, name) VALUES ('Experience Level', false, 'single', 13, 'Experience Level');
-INSERT INTO profile_formquestion (display_name, required, type, id, name) VALUES ('What languages do you speak, read, and write?', false, 'text', 14, 'What languages do you speak, read, and write?');
-INSERT INTO profile_formquestion (display_name, required, type, id, name) VALUES ('How did you hear about SocialCoding4Good?', false, 'multi', 15, 'How did you hear about SocialCoding4Good?');
-INSERT INTO profile_formquestion (display_name, required, type, id, name) VALUES ('Would you like us to keep you posted on the latest news from SocialCoding4Good?', false, 'single', 16, 'Would you like us to keep you posted on the latest news from SocialCoding4Good?');
-INSERT INTO profile_formquestion (display_name, required, type, id, name) VALUES ('Comments or Questions', false, 'textarea', 17, 'Comments or Questions');
+INSERT INTO profile_formquestion (name, required, type, id, display_name) VALUES ('Project Partner Interest', false, 'text', 1, 'Company, Organization, or Event Where You Learned About SocialCoding4Good');
+INSERT INTO profile_formquestion (name, required, type, id, display_name) VALUES ('Organizations', false, 'multi', 2, 'HFOSS Organizations That Interest You');
+INSERT INTO profile_formquestion (name, required, type, id, display_name) VALUES ('Causes', false, 'multi', 3, 'Causes That Interest You');
+INSERT INTO profile_formquestion (name, required, type, id, display_name) VALUES ('Time to Commit', true, 'multi', 4, 'How much time would you like to commit to volunteering?');
+INSERT INTO profile_formquestion (name, required, type, id, display_name) VALUES ('Skills', true, 'multi', 5, 'Skills');
+INSERT INTO profile_formquestion (name, required, type, id, display_name) VALUES ('Resume', false, 'file', 6, 'Resume');
+INSERT INTO profile_formquestion (name, required, type, id, display_name) VALUES ('LinkedIn, Coderwall, Etc.', false, 'url', 7, 'LinkedIn, OpenHatch or CoderWall Profile URL');
+INSERT INTO profile_formquestion (name, required, type, id, display_name) VALUES ('Previous Open Source?', false, 'single', 8, 'Have you previously contributed to open source projects?');
+INSERT INTO profile_formquestion (name, required, type, id, display_name) VALUES ('GitHub', false, 'text', 9, 'GitHub Username');
+INSERT INTO profile_formquestion (name, required, type, id, display_name) VALUES ('GoogleCode', false, 'text', 10, 'Google Code Username');
+INSERT INTO profile_formquestion (name, required, type, id, display_name) VALUES ('SourceForge, Ohloh or Other Username', false, 'text', 11, 'SourceForge, Ohloh or Other Username');
+INSERT INTO profile_formquestion (name, required, type, id, display_name) VALUES ('Programming Experience in These Languages', false, 'multi', 12, 'Programming Languages, Frameworks, Environments');
+INSERT INTO profile_formquestion (name, required, type, id, display_name) VALUES ('Experience Level', false, 'single', 13, 'Experience Level');
+INSERT INTO profile_formquestion (name, required, type, id, display_name) VALUES ('Spoken Languages', false, 'text', 14, 'What languages do you speak, read, and write?');
+INSERT INTO profile_formquestion (name, required, type, id, display_name) VALUES ('How did you hear about SocialCoding4Good?', false, 'multi', 15, 'How did you hear about SocialCoding4Good?');
+INSERT INTO profile_formquestion (name, required, type, id, display_name) VALUES ('Would you like us to keep you posted on the latest news from SocialCoding4Good?', false, 'single', 16, 'Would you like us to keep you posted on the latest news from SocialCoding4Good?');
+INSERT INTO profile_formquestion (name, required, type, id, display_name) VALUES ('Comments', false, 'textarea', 17, 'Comments or Questions');
 
 INSERT INTO profile_formanswer (question_id, value) VALUES (2, 'Benetech');
 INSERT INTO profile_formanswer (question_id, value) VALUES (2, 'Code for America');

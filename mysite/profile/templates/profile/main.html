@@ -179,7 +179,7 @@
             {% for item in questions %}
                 <div>
                     {% if item.question.type != 'file' or person.user == user or user|has_group:'ADMIN' %}
-                        <h4>{{ item.question.name }}</h4>
+                        <h4>{{ item.question.display_name }}</h4>
                     {% endif %}
                     <p>
                         {% for response in item.responses %}

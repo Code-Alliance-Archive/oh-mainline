@@ -224,7 +224,7 @@ class EditFieldsForm(django.forms.Form):
         super(EditFieldsForm, self).__init__(*args, **kwargs)
 
         for question in self.questions:
-            self.fields['question_%s' % question.id] = django.forms.CharField(label=question.display_name,
+            self.fields['question_%s' % question.id] = django.forms.CharField(label=question,
                                                                               max_length=100,
                                                                               min_length=1,
                                                                               required=True,
